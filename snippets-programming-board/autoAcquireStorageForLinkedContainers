@@ -1,0 +1,20 @@
+
+container = {}
+
+--
+-- This method will loop through all linked slots searching for containers. When a container is found, it saves the slot name and triggers 'slot.acquireStorage()'.
+-- Will only trigger acquireSlot() once for each container linked to the programming board.
+--
+function autoAcquireStorageForLinkedContainers()
+  -- update data
+  for slotName, slot in pairs(unit) do
+    if slot ~= nil and type(slot) == 'table' and type(slot.export) == 'table' and slot.getElementClass ~= nil and slot.getElementClass() ~= nil and string.match(slot.getElementClass(), 'Container') then        
+      if container[slot.getId()] == nil then
+        container[slot.getId()] = {}
+        container[slot.getId()]["name"] = slotName
+        -- acquireStorage
+        slot.acquireStorage()
+      end
+    end
+  end
+end
